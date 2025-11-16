@@ -1,0 +1,47 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <div class="container">
+        <h1>💊 <%= pageTitle %></h1>
+        <a href="/medicines/new" class="btn btn-primary mb-3">إضافة دواء جديد</a>
+
+        <% if (medicines.length > 0) { %>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>المادة الفعالة</th>
+                        <th>السعر</th>
+                        <th>المخزون</th>
+                        <th>تاريخ الانتهاء</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% medicines.forEach(medicine => { %>
+                        <tr>
+                            <td><%= medicine.name %></td>
+                            <td><%= medicine.activeIngredient %></td>
+                            <td><%= medicine.price.toFixed(2) %></td>
+                            <td><%= medicine.stock %></td>
+                            <td><%= medicine.expiryDate.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' }) %></td>
+                            <td>
+                                <a href="/medicines/edit/<%= medicine._id %>" class="btn btn-sm btn-warning">تعديل</a>
+                                <form action="/medicines/delete/<%= medicine._id %>" method="POST" style="display:inline;" onsubmit="return confirm('هل أنت متأكد من حذف <%= medicine.name %>؟');">
+                                    <button type="submit" class="btn btn-sm btn-danger">حذف</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p class="alert alert-info">لا يوجد أدوية مسجلة حالياً.</p>
+        <% } %>
+    </div>
+</body>
+</html>
